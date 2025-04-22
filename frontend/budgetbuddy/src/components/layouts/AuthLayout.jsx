@@ -2,13 +2,13 @@ import React from "react";
 import { LuTrendingUpDown } from "react-icons/lu";
 import CARD_2 from "../../assets/images/card2.png";
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = ({ children }) => {20
     return (
         <div className="flex w-screen h-screen">
 
             {/* Left Side - Login Section */}
             <div className="w-full md:w-[60vw] px-12 pt-8 pb-12 flex flex-col justify-center">
-                <h2 className="text-2xl font-semibold text-gray-900">Expense Tracker</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Budget Buddy</h2>
                 <div className="mt-6">
                     {children}
                 </div>
