@@ -1,13 +1,14 @@
 const xlsx = require("xlsx");
 const Expense = require("../models/Expense");
 
-// Add Expense Source
+// ✅ Add Expense Handler
 exports.addExpense = async (req, res) => {
     const userId = req.user._id;
 
     try {
         const { icon, category, amount, date, source } = req.body;
 
+        // ✅ Validate required fields
         if (!source || !amount || !date) {
             return res.status(400).json({ message: "All fields are required" });
         }
@@ -16,7 +17,7 @@ exports.addExpense = async (req, res) => {
             userId,
             icon,
             category,
-            source, // include source
+            source,
             amount,
             date: new Date(date),
         });
@@ -29,18 +30,18 @@ exports.addExpense = async (req, res) => {
     }
 };
 
-// Get All Expense Source
+// Get All Expense
 exports.getAllExpense = async (req, res) => {
     const userId = req.user._id;
     try {
-        const expenses = await Expense.find({ userId }).sort({ createdAt: -1 });
-        res.status(200).json({ expenses }); // Wrap in object
+      const expenses = await Expense.find({ userId }).sort({ createdAt: -1 });
+      res.status(200).json({ expenses }); // 👈 Wrap it inside an object
     } catch (error) {
-        res.status(500).json({ error: "Error fetching expenses" });
+      res.status(500).json({ error: "Error fetching expenses" });
     }
-};
-
-// Delete Expense Source
+  };
+  
+// Delete Expense
 exports.deleteExpense = async (req, res) => {
     try {
         await Expense.findByIdAndDelete(req.params.id);
