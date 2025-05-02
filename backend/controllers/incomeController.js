@@ -1,7 +1,9 @@
+
+
 const xlsx = require("xlsx");
 const Income = require("../models/Income");
 
-// Add Income
+// Add Income (for regular users)
 const addIncome = async (req, res) => {
     const userId = req.user._id;
 
@@ -28,7 +30,7 @@ const addIncome = async (req, res) => {
     }
 };
 
-// Get All Income
+// Get All Income (for logged-in user)
 const getAllIncome = async (req, res) => {
     const userId = req.user.id;
 
@@ -36,7 +38,17 @@ const getAllIncome = async (req, res) => {
         const income = await Income.find({ userId }).sort({ date: -1 });
         res.json(income);
     } catch (error) {
-        res.status(500).json({ message: "Server Error"});
+        res.status(500).json({ message: "Server Error" });
+    }
+};
+
+// ✅ Admin: Get all income (no userId filter)
+const getAllIncomeAdmin = async (req, res) => {
+    try {
+        const income = await Income.find().sort({ date: -1 });
+        res.json(income);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error" });
     }
 };
 
@@ -65,16 +77,17 @@ const downloadIncomeExcel = async (req, res) => {
         const wb = xlsx.utils.book_new();
         const ws = xlsx.utils.json_to_sheet(data);
         xlsx.utils.book_append_sheet(wb, ws, "Income");
-        xlsx.writeFile(wb, 'income_details.xlsx');
-        res.download('income_details.xlsx');
+        xlsx.writeFile(wb, "income_details.xlsx");
+        res.download("income_details.xlsx");
     } catch (error) {
-        res.status(500).json({ message: "Server Error"});
+        res.status(500).json({ message: "Server Error" });
     }
 };
 
 module.exports = {
     addIncome,
     getAllIncome,
+    getAllIncomeAdmin, // ✅ Exported for admin
     deleteIncome,
     downloadIncomeExcel
 };
